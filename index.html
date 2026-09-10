@@ -7,61 +7,441 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="ミライネット銀行" />
 <meta name="mobile-web-app-capable" content="yes" />
-<title>ミライネット銀行(架空)</title>
+<title>ミライネット銀行(架空) | ホーム</title>
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="lock-page">
-  <div class="lock-brand">ミライネット銀行</div>
+<div class="app">
 
-  <div class="lock-faceid" id="faceIdIcon">
-    <svg width="92" height="92" viewBox="0 0 92 92" fill="none">
-      <!-- 四隅のスキャン用ブラケット -->
-      <path class="bracket" d="M6 24V14a8 8 0 0 1 8-8h10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <path class="bracket" d="M86 24V14a8 8 0 0 0-8-8H68" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <path class="bracket" d="M6 68v10a8 8 0 0 0 8 8h10" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <path class="bracket" d="M86 68v10a8 8 0 0 1-8 8H68" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <!-- 顔（目・口） -->
-      <g class="face">
-        <path d="M30 38v9" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-        <path d="M62 38v9" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-        <path d="M46 40v14h-6" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-        <path d="M29 62c6 6 28 6 34 0" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/>
-      </g>
-      <!-- スキャンライン -->
-      <rect class="scan-line" x="10" y="10" width="72" height="3" rx="1.5" fill="#fff" opacity="0.85"/>
-      <!-- 認証成功のチェック -->
-      <path class="check" d="M27 47l12 12 26-26" stroke="var(--green,#3ecf8e)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    </svg>
+  <!-- ===== Top bar ===== -->
+  <header class="topbar">
+    <span class="icon-badge-wrap">
+      <span class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2.5" y="5" width="19" height="14" rx="2"/>
+          <path d="M3 6.5l9 6.5 9-6.5"/>
+        </svg>
+      </span>
+      <span class="badge-count">24</span>
+    </span>
+    <a class="icon-btn" href="settings.html" aria-label="データ連携設定">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.9.5-1.2 1-1.2 2" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </header>
+
+  <!-- ===== Notice ribbon ===== -->
+  <div class="notice">
+    <span class="notice-tag">銀行からのお知らせ</span>
+    <div class="notice-text">
+      【重要】メンテナンスのお知らせ（9/20 2:00〜6:00）<a class="link" href="#">詳細はこちら</a>
+    </div>
   </div>
 
-  <div class="lock-status" id="lockStatus">Face IDで認証中…</div>
+  <!-- ===== Account card ===== -->
+  <section class="account-card">
+    <div class="secure-row">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round">
+        <path d="M12 3l7 3v5c0 5-3.2 8.5-7 10-3.8-1.5-7-5-7-10V6l7-3z"/>
+        <path d="M9 12l2 2 4-4" stroke-linecap="round"/>
+      </svg>
+      セキュア認証
+    </div>
 
-  <button type="button" class="lock-fallback" id="skipBtn">パスコードを使用</button>
+    <div class="branch-row" id="branchRow">レモン支店（104）7975***</div>
+
+    <div class="account-select">
+      代表口座 円普通
+      <span class="chev">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6l8 12 8-12z"/></svg>
+      </span>
+    </div>
+
+    <div class="balance-row">
+      <span id="balanceText">＊＊＊円</span>
+      <button type="button" id="balanceToggle" class="eye" aria-label="残高の表示切り替え" style="background:none;border:none;padding:0;color:inherit;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/>
+          <circle cx="12" cy="12" r="2.6"/>
+          <path d="M3 3l18 18" stroke-width="1.6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <span class="label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="var(--gold)" stroke="none"><path d="M12 2l2.9 6.6L22 9.3l-5 4.9 1.2 7-6.2-3.4L5.8 21.2 7 14.2 2 9.3l7.1-.7z"/></svg>
+          ランク
+        </span>
+        <span class="value">ゴールド</span>
+      </div>
+      <div class="stat">
+        <span class="label">ATM入出金</span>
+        <span class="value">10回無料</span>
+      </div>
+      <div class="stat">
+        <span class="label">他行宛振込</span>
+        <span class="value">10回無料</span>
+      </div>
+      <div class="stat">
+        <span class="label">ポイント</span>
+        <span class="value">＊＊＊</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Icon grid ===== -->
+  <nav class="icon-grid" aria-label="メインメニュー">
+
+    <div class="icon-row">
+      <a class="icon-item" href="#" aria-label="アプリでATM">
+        <span class="icon-flag blue">いつでも0円</span>
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3.5" width="18" height="13" rx="2.2"/>
+            <path d="M8.3 8l0 5.4M8.3 8l-2.1 1.9M8.3 8l2.1 1.9" stroke="var(--red)"/>
+            <path d="M15.7 13.4l0-5.4M15.7 13.4l-2.1-1.9M15.7 13.4l2.1-1.9"/>
+            <rect x="7.5" y="18" width="9" height="4" rx="1" fill="var(--red)" stroke="none"/>
+            <text x="12" y="21" font-size="5" font-weight="700" text-anchor="middle" fill="#fff" stroke="none" font-family="inherit">ATM</text>
+          </svg>
+        </span>
+        <span class="icon-label">アプリでATM</span>
+      </a>
+
+      <a class="icon-item" href="transactions.html" aria-label="入出金明細">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2.2"/>
+            <path d="M8 8h8M8 12.2h5.5M8 16.4h8" stroke-width="1.8"/>
+            <path d="M15.5 12.8v4.4M15.5 12.8l-1.7 1.7M15.5 12.8l1.7 1.7" stroke="var(--red)" stroke-width="1.8"/>
+          </svg>
+        </span>
+        <span class="icon-label">入出金明細</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="振込">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.8" y="6.5" width="18.4" height="12.5" rx="2.2"/>
+            <path d="M2.8 10.3h18.4" stroke-width="2.2"/>
+            <path d="M5.8 15h4.5" stroke="var(--red)" stroke-width="2.2"/>
+            <path d="M13.5 4.2h6.3v6.3" stroke="var(--red)"/>
+            <path d="M19.8 4.2L13 11" stroke="var(--red)"/>
+          </svg>
+        </span>
+        <span class="icon-label">振込</span>
+      </a>
+
+      <a class="icon-item" href="balance.html" aria-label="残高照会">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4.5" y="2.5" width="15" height="19" rx="2.2"/>
+            <rect x="6.5" y="4.7" width="11" height="4" rx="0.8" fill="currentColor" stroke="none" opacity="0.9"/>
+            <circle cx="7.7" cy="12.4" r="1.15" fill="var(--red)" stroke="none"/>
+            <circle cx="12" cy="12.4" r="1.15" fill="currentColor" stroke="none"/>
+            <circle cx="16.3" cy="12.4" r="1.15" fill="currentColor" stroke="none"/>
+            <circle cx="7.7" cy="16.3" r="1.15" fill="currentColor" stroke="none"/>
+            <circle cx="12" cy="16.3" r="1.15" fill="currentColor" stroke="none"/>
+            <circle cx="16.3" cy="16.3" r="1.15" fill="var(--red)" stroke="none"/>
+          </svg>
+        </span>
+        <span class="icon-label">残高照会</span>
+      </a>
+    </div>
+
+    <div class="icon-row">
+      <a class="icon-item" href="#" aria-label="振替">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="4" width="13.5" height="9" rx="2"/>
+            <rect x="8" y="11" width="13.5" height="9" rx="2" fill="#fff"/>
+            <path d="M5 8.5h7.5" stroke-width="1.6"/>
+            <path d="M12.5 15.5h7.5" stroke="var(--red)" stroke-width="1.6"/>
+            <path d="M17.5 6l2.2 2-2.2 2" stroke="var(--red)" stroke-width="1.6"/>
+            <path d="M6.5 17.5l-2.2-2 2.2-2" stroke="var(--red)" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <span class="icon-label">振替</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="ハイブリッド預金">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9.2"/>
+            <circle cx="12" cy="12" r="9.2" stroke="var(--red)" stroke-width="2" stroke-dasharray="4 53" stroke-linecap="round"/>
+            <text x="12" y="15.8" font-size="9.5" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none" font-family="inherit">H</text>
+          </svg>
+        </span>
+        <span class="icon-label small">ハイブリッド<br/>預金</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="円定期預金">
+        <span class="icon-flag red">キャンペーン中</span>
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="13" r="8.2"/>
+            <path d="M11 8v5l3.4 2" stroke="var(--red)"/>
+            <path d="M8.3 2.6h5.4" />
+          </svg>
+        </span>
+        <span class="icon-label">円定期預金</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="デビット">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <rect x="2.3" y="5.2" width="19.4" height="13.6" rx="2.4"/>
+            <rect x="2.3" y="8.8" width="19.4" height="2.8" fill="currentColor" stroke="none"/>
+            <rect x="4.8" y="14.2" width="5.4" height="1.9" rx="0.5" fill="var(--red)" stroke="none"/>
+            <text x="12" y="16.2" font-size="3.8" font-weight="700" text-anchor="middle" fill="currentColor" stroke="none" font-family="inherit">DEBIT</text>
+          </svg>
+        </span>
+        <span class="icon-label">デビット</span>
+      </a>
+    </div>
+
+    <div class="icon-row">
+      <a class="icon-item" href="#" aria-label="住宅ローン">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 11l9-7.3 9 7.3" stroke="var(--red)"/>
+            <path d="M5.5 10v9.5h13v-9.5"/>
+            <path d="M9.7 19.5v-5.7h4.6v5.7" fill="currentColor" fill-opacity="0.08"/>
+            <text x="12" y="9.8" font-size="6" font-weight="700" text-anchor="middle" fill="var(--red)" stroke="none" font-family="inherit">¥</text>
+          </svg>
+        </span>
+        <span class="icon-label">住宅ローン</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="証券">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4.2" y="2.8" width="15.6" height="18.4" rx="2"/>
+            <path d="M7.3 17.5v-4M11 17.5v-6.5M14.7 17.5v-3M18.4 17.5v-8" stroke-width="1.8"/>
+            <path d="M7.3 12.3l2.3-2.6 2.4 1.8 3.5-4.3" stroke="var(--red)" stroke-width="1.8"/>
+          </svg>
+        </span>
+        <span class="icon-label">証券</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="お客さま情報">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.9"/>
+            <path d="M4.2 20.2c0-4.4 3.4-7.1 7.8-7.1s7.8 2.7 7.8 7.1"/>
+            <circle cx="12" cy="8" r="3.9" fill="var(--red)" fill-opacity="0.12" stroke="none"/>
+          </svg>
+        </span>
+        <span class="icon-label small">お客さま情報</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="税金等支払">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2.5" width="14" height="19" rx="2"/>
+            <path d="M7 7h8M7 10.5h8M7 14h5" stroke-width="1.7"/>
+            <circle cx="17.5" cy="17" r="4.3" fill="var(--red)" stroke="#fff" stroke-width="1.4"/>
+            <text x="17.5" y="18.7" font-size="5.5" font-weight="700" text-anchor="middle" fill="#fff" stroke="none" font-family="inherit">¥</text>
+          </svg>
+        </span>
+        <span class="icon-label">税金等支払</span>
+      </a>
+    </div>
+
+    <div class="icon-row">
+      <a class="icon-item" href="#" aria-label="サービスをさがす">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10.3" cy="10.3" r="6.8"/>
+            <path d="M15.2 15.2L21.5 21.5" stroke="var(--red)"/>
+          </svg>
+        </span>
+        <span class="icon-label small">サービスを<br/>さがす</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="つかいかたガイド">
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 5.2c2-1 5-1 8 0v13.6c-3-1-6-1-8 0z"/>
+            <path d="M20 5.2c-2-1-5-1-8 0v13.6c3-1 6-1 8 0z"/>
+            <path d="M12 5.2v13.6" stroke="var(--red)" stroke-width="1.6"/>
+          </svg>
+        </span>
+        <span class="icon-label small">つかいかた<br/>ガイド</span>
+      </a>
+
+      <a class="icon-item" href="#" aria-label="ロボアド">
+        <span class="icon-flag red">キャンペーン中</span>
+        <span class="icon-circle">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <circle cx="11.5" cy="12.5" r="8.3"/>
+            <path d="M11.5 4.2v8.3l6.5 3.5" fill="none"/>
+            <path d="M11.5 4.2a8.3 8.3 0 0 1 6.5 13.4l-6.5-5.1z" fill="var(--red)" stroke="none" opacity="0.85"/>
+            <path d="M20 4.5l0.6 1.5 1.5 0.6-1.5 0.6-0.6 1.5-0.6-1.5-1.5-0.6 1.5-0.6z" fill="var(--gold)" stroke="none"/>
+          </svg>
+        </span>
+        <span class="icon-label">ロボアド</span>
+      </a>
+
+      <button class="icon-item" type="button" aria-label="とじる" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <span class="icon-circle" style="background:#ececec;box-shadow:none;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 15l7-7 7 7"/>
+          </svg>
+        </span>
+        <span class="icon-label">とじる</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== Point account link card ===== -->
+  <section class="link-card">
+    <span class="glyph">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M9.5 7.5v9M9.5 7.5h3.2a2.6 2.6 0 0 1 0 5.2H9.5" />
+      </svg>
+    </span>
+    <span class="body">
+      <span class="title">ポイントアカウント連携</span><br/>
+      <span class="sub">いますぐアカウント連携をする</span>
+    </span>
+    <span class="status">
+      未連携
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </span>
+  </section>
+
+  <!-- ===== Debit promo ===== -->
+  <h2 class="promo-heading">デビット</h2>
+  <section class="promo-card">
+    <span class="art">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--blue-2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2.5" y="6" width="14" height="9.5" rx="1.6"/>
+        <path d="M17.5 5.5h2.2c1 0 1.8.8 1.8 1.8v9.4c0 1-.8 1.8-1.8 1.8H10c-1 0-1.8-.8-1.8-1.8v-1.2"/>
+        <path d="M5 10.2h8" stroke="var(--red)"/>
+      </svg>
+    </span>
+    <span class="body">
+      <span class="title">デビットカード</span>
+      <p class="desc">Apple Payですぐ使える！<br/>口座からの引落しで管理が簡単</p>
+    </span>
+  </section>
+
 </div>
 
-<script src="shared-data.js"></script>
-<script>
-  var lockStatus = document.getElementById("lockStatus");
-  var faceIdIcon = document.getElementById("faceIdIcon");
-  var redirected = false;
+<!-- ===== Fixed chat bar ===== -->
+<div class="chat-bar">
+  <div class="chat-bar-inner">
+    <span class="mascot">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2f6fae" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8"/>
+        <circle cx="9" cy="11" r="1" fill="#2f6fae" stroke="none"/>
+        <circle cx="15" cy="11" r="1" fill="#2f6fae" stroke="none"/>
+        <path d="M9 15c1 1 5 1 6 0"/>
+      </svg>
+    </span>
+    <span class="texts">
+      <span class="headline">AIアシスタント ベータテスター募集中！</span>
+      <span class="sub">今月コンビニにお金使いすぎ？</span>
+    </span>
+    <span class="action">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+        <circle cx="12" cy="13" r="3.4"/>
+      </svg>
+    </span>
+    <span class="action">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="2.5" width="6" height="11" rx="3"/>
+        <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/>
+        <path d="M12 18v3.5M9 21.5h6"/>
+      </svg>
+    </span>
+  </div>
+</div>
 
-  function goHome() {
-    if (redirected) return;
-    redirected = true;
-    window.location.href = "home.html";
+<!-- ===== Bottom tab bar ===== -->
+<nav class="tab-bar" aria-label="下部タブ">
+  <button class="tab-item active" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 11l8-7 8 7"/>
+      <path d="M6 10v9h12v-9"/>
+    </svg>
+    ホーム
+  </button>
+  <button class="tab-item" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M9 12h6M12 9l3 3-3 3"/>
+    </svg>
+    送金・支払
+  </button>
+  <button class="tab-item" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="9" width="17" height="11.5" rx="1.6"/>
+      <path d="M3.5 13.5h17"/>
+      <path d="M12 9v11.5"/>
+      <path d="M8.5 9c-2-2.2 1-4.5 2.5-2.4.6.8.8 1.6 1 2.4M15.5 9c2-2.2-1-4.5-2.5-2.4-.6.8-.8 1.6-1 2.4"/>
+    </svg>
+    キャンペーン
+  </button>
+  <button class="tab-item" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 5.5c2-1 5-1 8 0v13c-3-1-6-1-8 0z"/>
+      <path d="M20 5.5c-2-1-5-1-8 0v13c3-1 6-1 8 0z"/>
+    </svg>
+    使いかた
+  </button>
+  <button class="tab-item" type="button">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="6" height="6" rx="1"/>
+      <rect x="14" y="4" width="6" height="6" rx="1"/>
+      <rect x="4" y="14" width="6" height="6" rx="1"/>
+      <rect x="14" y="14" width="6" height="6" rx="1"/>
+    </svg>
+    メニュー
+  </button>
+</nav>
+
+<script src="shared-data.js"></script>
+<script src="sheet-config.js"></script>
+<script src="sheet-data.js"></script>
+<script src="transactions-data.js"></script>
+<script>
+  // 残高照会(balance.html)・入出金明細(transactions.html)とまったく同じ
+  // computeCurrentFutsuBalance()（transactions-data.js）を使って現在残高を計算する。
+  // これにより、スプレッドシートを連携していてもいなくても、3画面の金額が必ず一致する。
+  let balanceVisible = false;
+  let currentTotalBalance = null; // 読み込み中はnull（未確定）
+  const balanceText = document.getElementById('balanceText');
+
+  async function loadBalance() {
+    const futsuBalance = await computeCurrentFutsuBalance();
+    const resolvedFutsu = futsuBalance !== null ? futsuBalance : BANK_ACCOUNT.futsuBalance;
+    currentTotalBalance = resolvedFutsu + BANK_ACCOUNT.hybridBalance;
+    if (balanceVisible) {
+      balanceText.textContent = formatYen(currentTotalBalance) + '円';
+    }
   }
 
-  // 顔認証中→認証成功のアニメーションを見せてから、ホーム画面(home.html)へ自動遷移する。
-  // 実際の生体認証は行わない、見た目だけの演出。
-  setTimeout(function () {
-    lockStatus.textContent = "認証されました";
-    faceIdIcon.classList.add("success");
-  }, 1400);
+  document.getElementById('balanceToggle').addEventListener('click', () => {
+    balanceVisible = !balanceVisible;
+    if (!balanceVisible) {
+      balanceText.textContent = '＊＊＊円';
+    } else if (currentTotalBalance !== null) {
+      balanceText.textContent = formatYen(currentTotalBalance) + '円';
+    } else {
+      balanceText.textContent = '取得中…';
+    }
+  });
 
-  setTimeout(goHome, 2000);
-
-  document.getElementById("skipBtn").addEventListener("click", goHome);
+  document.getElementById('branchRow').textContent = BANK_ACCOUNT.accountLabel;
+  loadBalance();
 </script>
 </body>
 </html>
