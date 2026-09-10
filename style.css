@@ -1256,3 +1256,99 @@ button {
 .settings-note strong {
   color: var(--text-main);
 }
+
+/* ===== index.html：Face ID認証（演出のみ・実際の生体認証は行わない）===== */
+.lock-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  padding: calc(var(--safe-top) + 24px) 24px calc(var(--safe-bottom) + 24px);
+  background: linear-gradient(160deg, var(--blue-1) 0%, var(--blue-2) 55%, var(--blue-3) 100%);
+  color: #fff;
+  text-align: center;
+}
+
+.lock-brand {
+  position: absolute;
+  top: calc(var(--safe-top) + 28px);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.lock-faceid {
+  width: 92px;
+  height: 92px;
+}
+
+.lock-faceid .bracket {
+  transform-origin: center;
+  animation: faceid-pulse 1.6s ease-in-out infinite;
+}
+
+.lock-faceid .face {
+  opacity: 0.95;
+}
+
+.lock-faceid .scan-line {
+  animation: faceid-scan 1.4s ease-in-out infinite;
+}
+
+.lock-faceid .check {
+  opacity: 0;
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+}
+
+.lock-faceid.success .bracket {
+  animation: none;
+  stroke: #3ecf8e;
+}
+
+.lock-faceid.success .face,
+.lock-faceid.success .scan-line {
+  opacity: 0;
+}
+
+.lock-faceid.success .check {
+  animation: faceid-check 0.5s ease forwards;
+}
+
+@keyframes faceid-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes faceid-scan {
+  0% { transform: translateY(0); opacity: 0; }
+  15% { opacity: 0.85; }
+  85% { opacity: 0.85; }
+  100% { transform: translateY(72px); opacity: 0; }
+}
+
+@keyframes faceid-check {
+  to { opacity: 1; stroke-dashoffset: 0; }
+}
+
+.lock-status {
+  font-size: 14.5px;
+  font-weight: 600;
+  opacity: 0.9;
+  min-height: 20px;
+}
+
+.lock-fallback {
+  position: absolute;
+  bottom: calc(var(--safe-bottom) + 36px);
+  background: none;
+  border: none;
+  color: #fff;
+  opacity: 0.85;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 14px;
+}
