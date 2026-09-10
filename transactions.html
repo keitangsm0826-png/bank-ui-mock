@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>入出金明細 | ミライネット銀行(架空)</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="txn-page">
+
+  <header class="topbar plain">
+    <a class="icon-btn" href="index.html" aria-label="閉じる">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M5 5l14 14M19 5L5 19"/>
+      </svg>
+    </a>
+    <span class="icon-btn">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.9.5-1.2 1-1.2 2" stroke-linecap="round"/>
+        <circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/>
+      </svg>
+    </span>
+  </header>
+
+  <div class="txn-title-band">入出金明細</div>
+
+  <div class="filter-row">
+    <button type="button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="#fff"/><circle cx="15" cy="17" r="2" fill="#fff"/></svg>
+      絞り込み
+    </button>
+    <button type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg>
+      ダウンロード
+    </button>
+  </div>
+
+  <section class="hero-chart-card">
+    <div class="account-currency-row">
+      <span class="pill">代表口座
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6l8 12 8-12z"/></svg>
+      </span>
+      <span class="pill">円
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6l8 12 8-12z"/></svg>
+      </span>
+    </div>
+    <div class="current-balance-row">
+      <span class="label">現在残高</span>
+      <span class="value"><span id="currentBalance">-</span><span class="yen">円</span></span>
+    </div>
+    <div class="chart-scroll" id="chartScroll"></div>
+  </section>
+
+  <div class="sticky-controls">
+    <div class="month-nav-row">
+      <button type="button" id="prevMonthBtn" aria-label="前の月">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <span id="monthNavLabel">-</span>
+      <button type="button" id="nextMonthBtn" aria-label="次の月">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="summary-row">
+    <span class="income">入金 <span class="amt" id="incomeAmount">-</span>円</span>
+    <span class="expense">出金 <span class="amt" id="expenseAmount">-</span>円</span>
+  </div>
+
+  <div id="txnList"></div>
+
+  <div class="info-block">
+    <p>任意の期間を表示する場合や、CSV・PDFをダウンロードする場合は「絞り込み」＞「期間」＞「期間指定」にて期間を選択してください。</p>
+    <p>当社からの郵送による証明書が必要な場合は、「証明書・依頼書発行」画面より、ご依頼ください。</p>
+    <a class="chev-link" href="#">＞ 証明書等の発行方法についてはこちら</a>
+    <h3>インボイスについて</h3>
+    <p>インボイスは3日前の明細から発行いただけます。インボイス発行ボタンが表示されていない明細でインボイス発行をご希望の場合は、下記ページよりお問合せください。</p>
+    <a class="chev-link" href="#">＞ インボイスに関するよくあるご質問</a>
+    <a class="chev-link" href="#">＞ インボイス発行依頼</a>
+  </div>
+
+  <a class="nav-link-row" href="balance.html">
+    残高照会
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+  </a>
+  <a class="nav-link-row" href="#">
+    口座一覧
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+  </a>
+
+  <div class="footer-bar">© Mirai Net Bank, Inc.</div>
+</div>
+
+<nav class="webview-nav">
+  <span class="nav-arrows">
+    <button type="button" disabled aria-label="戻る">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button type="button" disabled aria-label="進む">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </span>
+  <button type="button" id="reloadBtn" aria-label="再読み込み">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/>
+      <path d="M18 3v4h-4M6 21v-4h4"/>
+    </svg>
+  </button>
+</nav>
+
+<script src="shared-data.js"></script>
+<script src="sheet-config.js"></script>
+<script src="sheet-data.js"></script>
+<script src="transactions-data.js"></script>
+<script>
+  let ALL_MONTHS = [];
+  let selectedIndex = 0;
+
+  function formatYenSigned(n) {
+    return (n >= 0 ? "+" : "-") + Math.abs(n).toLocaleString("ja-JP");
+  }
+
+  function renderChart() {
+    const totals = ALL_MONTHS.map((m) => monthlyTotals(m.year, m.month));
+    const maxVal = Math.max(1, ...totals.map((t) => Math.max(t.income, t.expense)));
+    const scroll = document.getElementById("chartScroll");
+
+    // 0円の基準線はチャート全体を貫く1本の線として、月の列とは別に先頭に描画する。
+    // 幅は「列の幅54px × 列数 + 列間の余白4px × (列数-1)」で、全月分の実際の横幅に合わせる。
+    const colWidth = 54;
+    const gap = 4;
+    const totalWidth = ALL_MONTHS.length * colWidth + Math.max(0, ALL_MONTHS.length - 1) * gap;
+    const baselineHtml = `<span class="chart-baseline" style="width:${totalWidth}px;"></span>`;
+
+    const barsHtml = ALL_MONTHS.map((m, i) => {
+      const t = totals[i];
+      const upH = Math.round((t.income / maxVal) * 30);
+      const downH = Math.round((t.expense / maxVal) * 30);
+      const selected = i === selectedIndex ? "selected" : "";
+      return `
+        <button type="button" class="month-bar-col ${selected}" data-index="${i}" aria-label="${m.year}年${m.month}月">
+          <span class="month-bar-track">
+            <span class="month-bar-up" style="height:${upH}px;"></span>
+            <span class="month-bar-down" style="height:${downH}px;"></span>
+          </span>
+          <span class="month-bar-label">${monthLabel(m.year, m.month)}</span>
+        </button>`;
+    }).join("");
+
+    scroll.innerHTML = baselineHtml + barsHtml;
+
+    scroll.querySelectorAll(".month-bar-col").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectedIndex = Number(btn.dataset.index);
+        renderAll();
+      });
+    });
+
+    // 現在選択中の月バーが見えるようスクロール位置を合わせる
+    const selEl = scroll.querySelector(".month-bar-col.selected");
+    if (selEl) selEl.scrollIntoView({ inline: "center", block: "nearest" });
+  }
+
+  function renderList() {
+    const { year, month } = ALL_MONTHS[selectedIndex];
+    document.getElementById("monthNavLabel").textContent = `${year}年${month}月`;
+    document.getElementById("prevMonthBtn").disabled = selectedIndex === 0;
+    document.getElementById("nextMonthBtn").disabled = selectedIndex === ALL_MONTHS.length - 1;
+
+    const totals = monthlyTotals(year, month);
+    document.getElementById("incomeAmount").textContent = totals.income.toLocaleString("ja-JP");
+    document.getElementById("expenseAmount").textContent = totals.expense.toLocaleString("ja-JP");
+
+    const rows = transactionsForMonth(year, month);
+    const listEl = document.getElementById("txnList");
+
+    if (rows.length === 0) {
+      listEl.innerHTML = `<div class="txn-empty">この月の明細はありません。</div>`;
+      return;
+    }
+
+    let html = "";
+    let lastDay = null;
+    rows.forEach((r) => {
+      const day = Number(r.date.split("-")[2]);
+      if (day !== lastDay) {
+        html += `<div class="day-group-heading">${day}日</div>`;
+        lastDay = day;
+      }
+      const isPlus = r.amount > 0;
+      html += `
+        <div class="txn-row">
+          ${renderTxnIcon(r.category)}
+          <div class="txn-body">
+            <div class="name">${r.name}</div>
+            <div class="edit">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4 11-11 3 3-11 11-4 1z"/></svg>
+            </div>
+          </div>
+          <div class="txn-amount">
+            <div class="amt ${isPlus ? "plus" : "minus"}">${formatYenSigned(r.amount)}円</div>
+            <div class="bal">残高${r.balance.toLocaleString("ja-JP")}円</div>
+          </div>
+        </div>`;
+    });
+    listEl.innerHTML = html;
+  }
+
+  // LEDGER（transactions-data.js）の一番新しい行の残高をそのまま「現在残高」として表示する。
+  // balance.html / index.html も同じスプレッドシートを参照するため、常に一致する。
+  function renderCurrentBalance() {
+    const last = LEDGER[LEDGER.length - 1];
+    document.getElementById("currentBalance").textContent = last ? formatYen(last.balance) : "-";
+  }
+
+  function renderAll() {
+    renderChart();
+    renderList();
+    renderCurrentBalance();
+  }
+
+  document.getElementById("prevMonthBtn").addEventListener("click", () => {
+    if (selectedIndex > 0) { selectedIndex--; renderAll(); }
+  });
+  document.getElementById("nextMonthBtn").addEventListener("click", () => {
+    if (selectedIndex < ALL_MONTHS.length - 1) { selectedIndex++; renderAll(); }
+  });
+  document.getElementById("reloadBtn").addEventListener("click", () => location.reload());
+
+  // sheet-config.js にスプレッドシートのURLが設定されていればそちらを読み込み、
+  // 未設定・取得失敗時はこれまで通りサンプルデータ(MOCK_LEDGER)を使う。
+  async function init() {
+    const sheetRows = await fetchTransactionsFromSheet();
+    if (sheetRows && sheetRows.length) {
+      const entries = sheetRows.map((r) => ({
+        date: r.date,
+        category: resolveCategory(r.category, r.description, r.amount),
+        name: r.description,
+        amount: r.amount,
+        balance: r.balance,
+      }));
+      LEDGER = buildLedgerFromEntries(entries);
+    } else {
+      LEDGER = buildLedgerFromEntries(MOCK_LEDGER);
+    }
+    ALL_MONTHS = listAvailableMonths();
+    selectedIndex = ALL_MONTHS.length - 1;
+    renderAll();
+  }
+
+  init();
+</script>
+</body>
+</html>
