@@ -6,11 +6,28 @@
    呼び出し側は shared-data.js のモック値にフォールバックすること。
    ============================================================ */
 
+// settings.html でこの端末のブラウザに保存したURL（localStorage）があれば
+// そちらを最優先で使う。無ければ sheet-config.js の csvUrl を使う。
+// こうしておくことで、csvUrl自体はコードに書かずに済み、公開リポジトリに
+// アップロードしても実際のスプレッドシートURLが外部に漏れない。
+const SHEET_URL_STORAGE_KEY = "miraiBank.sheetCsvUrl";
+
+function getEffectiveCsvUrl() {
+  try {
+    const saved = window.localStorage.getItem(SHEET_URL_STORAGE_KEY);
+    if (saved) return saved;
+  } catch (err) {
+    // localStorageが使えない環境（プライベートブラウズ等）は無視してフォールバック
+  }
+  return SHEET_CONFIG.csvUrl;
+}
+
 async function fetchTransactionsFromSheet() {
-  if (!SHEET_CONFIG.csvUrl) return null;
+  const csvUrl = getEffectiveCsvUrl();
+  if (!csvUrl) return null;
 
   try {
-    const res = await fetch(SHEET_CONFIG.csvUrl, { cache: "no-store" });
+    const res = await fetch(csvUrl, { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const text = await res.text();
     return parseCSV(text);

@@ -41,9 +41,21 @@
       csvUrl が空のままの間は、これまで通りサンプルデータが使われる。
    ============================================================ */
 
+/* ------------------------------------------------------------
+   【重要・公開する場合の注意】
+   このファイル（csvUrl）をGitHub Pagesなどで公開リポジトリにアップロード
+   すると、実際のスプレッドシートURLも含めて誰でも閲覧できてしまいます。
+
+   そのため、csvUrlはここには書かず、空のままにしておいてください。
+   代わりに settings.html を開いてURLを入力すると、そのURLは自分の
+   iPhone（ブラウザ）のlocalStorageにだけ保存され、コードには残りません。
+   settings.htmlで保存されたURLがあればそちらが優先され、無ければ
+   このcsvUrlが使われます（自分だけで使う・公開しない場合はここに直接
+   書いても構いません）。
+   ------------------------------------------------------------ */
 const SHEET_CONFIG = {
   // 例: "https://docs.google.com/spreadsheets/d/e/xxxxxxxx/pub?gid=0&single=true&output=csv"
-  csvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSi7ma-x01BjiAZmYbNrUllxen-An5Nmh6AarV5JLBnJF0PIuNQq0IjmPtcTy7pvqzBERQoOiOAujGT/pub?gid=0&single=true&output=csv",
+  csvUrl: "",
 
   // シートの列見出し名（シート側の見出しを変えた場合はここも合わせる）
   columns: {

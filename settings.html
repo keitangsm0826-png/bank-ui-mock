@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="ミライネット銀行" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>データ連携設定 | ミライネット銀行(架空)</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="settings-page">
+
+  <header class="topbar plain">
+    <a class="icon-btn" href="index.html" aria-label="閉じる">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M5 5l14 14M19 5L5 19"/>
+      </svg>
+    </a>
+    <span class="icon-btn"></span>
+  </header>
+
+  <div class="settings-title-band">データ連携設定</div>
+
+  <div class="settings-card">
+    <h3>Googleスプレッドシート CSV URL</h3>
+    <p>
+      公開したスプレッドシートのCSV URLをここに入力して保存すると、
+      この端末のブラウザだけに保存され、balance.html / transactions.html
+      が自動的にこのシートを読みに行きます。<br/>
+      このURLはコード（sheet-config.js）には書き込まれないので、
+      このプロジェクトをGitHub Pagesなど公開の場所にアップロードしても、
+      URLが他人に見られることはありません（この端末のブラウザ以外では
+      設定し直す必要があります）。
+    </p>
+    <input type="url" id="csvUrlInput" placeholder="https://docs.google.com/spreadsheets/d/e/.../pub?...&output=csv" autocapitalize="off" autocorrect="off" spellcheck="false" />
+    <div class="settings-btn-row">
+      <button type="button" class="settings-btn primary" id="saveBtn">保存する</button>
+      <button type="button" class="settings-btn danger" id="clearBtn">削除する</button>
+    </div>
+    <div class="settings-status" id="statusBox"></div>
+  </div>
+
+  <p class="settings-note">
+    <strong>保存先について：</strong>入力したURLはこの端末のこのブラウザ（Safari）の
+    localStorageにのみ保存されます。他のiPhoneやパソコンからこのページを開いた場合は、
+    それぞれの端末で個別に入力し直してください。また「シークレットブラウズ」やSafariの
+    データ消去を行うと、保存した内容も消えます。
+  </p>
+
+  <div class="footer-bar">© Mirai Net Bank, Inc.</div>
+</div>
+
+<script src="sheet-config.js"></script>
+<script src="sheet-data.js"></script>
+<script>
+  const input = document.getElementById("csvUrlInput");
+  const statusBox = document.getElementById("statusBox");
+
+  function showStatus(text, isEmpty) {
+    statusBox.textContent = text;
+    statusBox.classList.add("show");
+    statusBox.classList.toggle("empty", !!isEmpty);
+  }
+
+  function loadCurrent() {
+    let saved = "";
+    try {
+      saved = window.localStorage.getItem(SHEET_URL_STORAGE_KEY) || "";
+    } catch (err) {
+      // localStorageが使えない場合は空のまま
+    }
+    if (saved) {
+      input.value = saved;
+      showStatus("現在この端末に保存されています。", false);
+    } else if (SHEET_CONFIG.csvUrl) {
+      showStatus("この端末には未保存です（sheet-config.js側のURLが使われます）。", true);
+    } else {
+      showStatus("まだ何も設定されていません。サンプルデータが表示されます。", true);
+    }
+  }
+
+  document.getElementById("saveBtn").addEventListener("click", () => {
+    const value = input.value.trim();
+    if (!value) {
+      showStatus("URLを入力してから保存してください。", true);
+      return;
+    }
+    try {
+      window.localStorage.setItem(SHEET_URL_STORAGE_KEY, value);
+      showStatus("保存しました。この端末のbalance.html / transactions.htmlに反映されます。", false);
+    } catch (err) {
+      showStatus("保存に失敗しました（このブラウザではlocalStorageが使えない可能性があります）。", true);
+    }
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", () => {
+    try {
+      window.localStorage.removeItem(SHEET_URL_STORAGE_KEY);
+    } catch (err) {
+      // 何もしない
+    }
+    input.value = "";
+    loadCurrent();
+  });
+
+  loadCurrent();
+</script>
+</body>
+</html>
