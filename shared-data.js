@@ -6,14 +6,17 @@
    ============================================================ */
 
 const BANK_ACCOUNT = {
-  branchName: "さくら支店",
-  branchNo: "101",
-  accountNo: "1234567",
+  branchName: "レモン支店",
+  branchNo: "104",
+  accountNo: "7975***",
   futsuBalance: 5623937,   // 円普通預金
   hybridBalance: 0,        // ハイブリッド預金
   prevMonthDiff: -9115,    // 前月末比
   get totalBalance() {
     return this.futsuBalance + this.hybridBalance;
+  },
+  get accountLabel() {
+    return `${this.branchName}（${this.branchNo}）${this.accountNo}`;
   },
 };
 

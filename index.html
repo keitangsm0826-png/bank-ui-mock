@@ -51,7 +51,7 @@
       セキュア認証
     </div>
 
-    <div class="branch-row">さくら支店（101）1234567</div>
+    <div class="branch-row" id="branchRow">レモン支店（104）7975***</div>
 
     <div class="account-select">
       代表口座 円普通
@@ -440,6 +440,7 @@
     }
   });
 
+  document.getElementById('branchRow').textContent = BANK_ACCOUNT.accountLabel;
   loadBalance();
 </script>
 </body>

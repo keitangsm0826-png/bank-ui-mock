@@ -797,9 +797,9 @@ button {
 }
 
 .hero-chart-card {
-  margin: 0 16px 0;
-  padding: 18px 18px 0;
-  border-radius: 16px 16px 0 0;
+  margin: 0;
+  padding: 18px 18px 16px;
+  border-radius: 0;
   color: #fff;
   background: linear-gradient(160deg, var(--blue-1) 0%, var(--blue-2) 55%, var(--blue-3) 100%);
 }
