@@ -409,16 +409,38 @@
 </nav>
 
 <script src="shared-data.js"></script>
+<script src="sheet-config.js"></script>
+<script src="sheet-data.js"></script>
+<script src="transactions-data.js"></script>
 <script>
-  // 残高照会・入出金明細と同じデータソースを参照し、目のアイコンで表示/非表示を切り替える
+  // 残高照会(balance.html)・入出金明細(transactions.html)とまったく同じ
+  // computeCurrentFutsuBalance()（transactions-data.js）を使って現在残高を計算する。
+  // これにより、スプレッドシートを連携していてもいなくても、3画面の金額が必ず一致する。
   let balanceVisible = false;
+  let currentTotalBalance = null; // 読み込み中はnull（未確定）
   const balanceText = document.getElementById('balanceText');
+
+  async function loadBalance() {
+    const futsuBalance = await computeCurrentFutsuBalance();
+    const resolvedFutsu = futsuBalance !== null ? futsuBalance : BANK_ACCOUNT.futsuBalance;
+    currentTotalBalance = resolvedFutsu + BANK_ACCOUNT.hybridBalance;
+    if (balanceVisible) {
+      balanceText.textContent = formatYen(currentTotalBalance) + '円';
+    }
+  }
+
   document.getElementById('balanceToggle').addEventListener('click', () => {
     balanceVisible = !balanceVisible;
-    balanceText.textContent = balanceVisible
-      ? formatYen(BANK_ACCOUNT.totalBalance) + '円'
-      : '＊＊＊円';
+    if (!balanceVisible) {
+      balanceText.textContent = '＊＊＊円';
+    } else if (currentTotalBalance !== null) {
+      balanceText.textContent = formatYen(currentTotalBalance) + '円';
+    } else {
+      balanceText.textContent = '取得中…';
+    }
   });
+
+  loadBalance();
 </script>
 </body>
 </html>

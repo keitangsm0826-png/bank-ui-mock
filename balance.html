@@ -132,35 +132,13 @@
 <script src="sheet-data.js"></script>
 <script src="transactions-data.js"></script>
 <script>
-  // 入出金明細(transactions.html)とまったく同じ手順（同じCSV取得→同じ
-  // buildLedgerFromEntriesによる残高計算）で「現在残高」を出すことで、
-  // 2つの画面の金額が必ず一致するようにする。
-  // （以前はここだけ別の簡易ロジック(fetchLatestBalanceFromSheet)を使って
-  // いたため、CSVの行順によっては入出金明細と違う金額になることがあった）
-  async function computeCurrentBalance() {
-    const sheetRows = await fetchTransactionsFromSheet();
-    let ledger;
-    if (sheetRows && sheetRows.length) {
-      const entries = sheetRows.map((r) => ({
-        date: r.date,
-        category: resolveCategory(r.category, r.description, r.amount),
-        name: r.description,
-        amount: r.amount,
-        balance: r.balance,
-      }));
-      ledger = buildLedgerFromEntries(entries);
-    } else {
-      ledger = buildLedgerFromEntries(MOCK_LEDGER);
-    }
-    const last = ledger[ledger.length - 1];
-    return last ? last.balance : null;
-  }
-
   async function renderBalance() {
     // sheet-config.js（または settings.html で保存したURL）に公開スプレッドシートの
     // URLが設定されていればそちらを優先し、未設定・取得失敗時は shared-data.js の
-    // モック値を使う。
-    const sheetBalance = await computeCurrentBalance();
+    // モック値を使う。ホーム画面(index.html)・入出金明細(transactions.html)とも
+    // 同じ computeCurrentFutsuBalance()（transactions-data.js）を使うので、
+    // 3画面の金額は必ず一致する。
+    const sheetBalance = await computeCurrentFutsuBalance();
     const futsuBalance = sheetBalance !== null ? sheetBalance : BANK_ACCOUNT.futsuBalance;
     const totalBalance = futsuBalance + BANK_ACCOUNT.hybridBalance;
 

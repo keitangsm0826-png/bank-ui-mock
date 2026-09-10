@@ -159,6 +159,29 @@ function buildLedgerFromEntries(entries, options = {}) {
 // 設定されていれば、ページ側でこの LEDGER を実データで作り直す（transactions.html参照）
 let LEDGER = buildLedgerFromEntries(MOCK_LEDGER);
 
+// index.html（ホーム）・balance.html（残高照会）・transactions.html（入出金明細）の
+// どの画面でも「現在残高（円普通預金）」がまったく同じ値になるよう、この関数だけを
+// 唯一の計算経路にする。スプレッドシートが未設定・取得失敗時はサンプルデータ
+// (MOCK_LEDGER) から計算し、shared-data.js の値とも一致させる。
+async function computeCurrentFutsuBalance() {
+  const sheetRows = await fetchTransactionsFromSheet();
+  let ledger;
+  if (sheetRows && sheetRows.length) {
+    const entries = sheetRows.map((r) => ({
+      date: r.date,
+      category: resolveCategory(r.category, r.description, r.amount),
+      name: r.description,
+      amount: r.amount,
+      balance: r.balance,
+    }));
+    ledger = buildLedgerFromEntries(entries);
+  } else {
+    ledger = buildLedgerFromEntries(MOCK_LEDGER);
+  }
+  const last = ledger[ledger.length - 1];
+  return last ? last.balance : null;
+}
+
 // "2026-08-31" -> { year: 2026, month: 8 }
 function ymKey(dateStr) {
   const [y, m] = dateStr.split("-").map(Number);
