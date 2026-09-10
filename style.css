@@ -499,7 +499,8 @@ button {
 }
 
 .topbar.plain {
-  padding-bottom: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .menu-bar {
@@ -770,7 +771,7 @@ button {
 .txn-title-band {
   background: #f0f0f0;
   text-align: center;
-  padding: 18px 16px;
+  padding: 8px 16px 12px;
   font-size: 17px;
   font-weight: 700;
 }
